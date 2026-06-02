@@ -1,0 +1,37 @@
+# .htaccess — Apache configuration for the Math Practice app
+# Place this file in the same directory as index.php
+
+# ── Prevent directory listing ──────────────────────────────────
+Options -Indexes
+
+# ── Block direct browser access to api.php via GET ─────────────
+# The AJAX script always POSTs; a stray GET from a browser returns
+# a 405 from php itself, but this header reinforces it visually.
+<Files "api.php">
+    Header set X-Robots-Tag "noindex"
+</Files>
+
+# ── Security headers (applies to all responses) ────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "same-origin"
+    # CSP: allow scripts/styles only from same origin; no inline eval or onclick
+    # Note: script-src 'self' blocks inline event handlers (onclick="...") by design.
+    # All event binding uses addEventListener in script.js instead.
+    Header always set Content-Security-Policy "default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none';"
+</IfModule>
+
+# ── Charset ────────────────────────────────────────────────────
+AddDefaultCharset UTF-8
+
+# ── Disable server signature ───────────────────────────────────
+ServerSignature Off
+
+# ── Cache static assets (CSS, JS) for 1 hour ──────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css             "access plus 1 hour"
+    ExpiresByType application/javascript "access plus 1 hour"
+</IfModule>
