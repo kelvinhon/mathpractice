@@ -29,9 +29,11 @@ AddDefaultCharset UTF-8
 # ── Disable server signature ───────────────────────────────────
 ServerSignature Off
 
-# ── Cache static assets (CSS, JS) for 1 hour ──────────────────
+# ── Cache static assets (CSS, JS) for 1 year ──────────────────
+# Safe because index.php appends ?v=<filemtime> to style.css/script.js,
+# so any file change produces a new URL that bypasses the cache.
 <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType text/css             "access plus 1 hour"
-    ExpiresByType application/javascript "access plus 1 hour"
+    ExpiresByType text/css             "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
 </IfModule>

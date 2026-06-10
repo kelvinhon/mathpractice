@@ -18,7 +18,7 @@ header("X-XSS-Protection: 1; mode=block");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>數學練習 — 10以內加減法</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=<?php echo @filemtime(__DIR__ . '/style.css') ?: time(); ?>" />
 </head>
 <body>
 
@@ -215,6 +215,6 @@ header("X-XSS-Protection: 1; mode=block");
         <div class="spinner"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=<?php echo @filemtime(__DIR__ . '/script.js') ?: time(); ?>"></script>
 </body>
 </html>
